@@ -10,6 +10,7 @@ interface RegisterParams{
     password: string;
 }
 export const register = async({firstName, lastName, email, password}: RegisterParams) => {
+  
   const findUser = await userModel.findOne({email})
    
   if(findUser){
@@ -43,5 +44,5 @@ const passwordMatch = await bcrypt.compare(password, findUser.password);
     }
 
     const generateJWT = (data: any) =>{
-      return jwt.sign(data, "HD+9KUx[?H&TsWC")
+      return jwt.sign(data, process.env.JWT_SECRET || '')
     }

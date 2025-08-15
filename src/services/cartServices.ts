@@ -165,6 +165,7 @@ interface Checkout{
 }
 
 export const checkout = async ({userId, address}: Checkout) => {
+  
  if(!address){
   return{
     data: "Please add the address", statusCode: 400
