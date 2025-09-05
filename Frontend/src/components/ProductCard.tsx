@@ -31,10 +31,7 @@ export default function ProductCard({ title, image, price}: Props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button  variant= "contained" size="small" sx={{ 
-        backgroundColor: "black", 
-        color: "#eee",
-        
+        <Button  variant= "contained" size="small" sx={{   
       
         }}>Add to Cart</Button>
        

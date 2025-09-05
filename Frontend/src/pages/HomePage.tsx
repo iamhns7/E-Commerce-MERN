@@ -4,15 +4,24 @@ import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
 import type { Product } from "../types/Product";
 
-const HomePage = () => {
-  const[products, setproducts]= useState<Product[]>([])
+const apiUrl = import.meta.env.VITE_API_URL;
 
-  useEffect(() => {
-    fetch("http://localhost:3003/product").then(async (response) => {
+const HomePage = () => {
+  
+  const[products, setProducts]= useState<Product[]>([])
+
+useEffect(() => {
+  const fetchDate = async () => {
+      const response =await fetch(`${apiUrl}/product`);
       const data = await response.json();
-      setproducts(data)
-    });
-  },[])
+      setProducts(data)
+  }
+  fetchDate();
+  
+  
+}, []);
+
+
   return (
     <Container sx={{ mt: 2 }}>
       <Grid container spacing={2}>

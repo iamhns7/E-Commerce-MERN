@@ -25,10 +25,8 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static"
-    sx={{
-      backgroundColor: "#3fa49bff",
-    }}>
+    <AppBar  position="static"
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
             <Box sx = {{
