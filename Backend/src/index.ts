@@ -4,14 +4,14 @@
   import userRoutes from "./routes/userRoutes";
   import { seedInitialProducts } from "./services/productServices";
   import productRoute from "./routes/productRoute";
-  import cartRoute from './routes/cartRoute'
-
+  import cartRoute from './routes/cartRoute';
+  import  cors from "cors";
   dotenv.config();  
 
   const app = express();
   const port = 3003;
-
-  app.use(express.json())
+  app.use(express.json());
+  app.use(cors())
   console.log(process.env.DATABASE_URL)
 
   mongoose

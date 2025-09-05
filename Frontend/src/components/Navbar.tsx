@@ -25,7 +25,10 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static"
+    sx={{
+      backgroundColor: "#3fa49bff",
+    }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
             <Box sx = {{
@@ -34,11 +37,13 @@ function Navbar() {
                 justifyContent: "space-between",
                 width: "100%",
                 alignItems: "center"
+                
                 }}>
               <Box sx=
               {{ display: "flex",
                  flexDirection: "row",
-                 alignItems: "center"
+                 alignItems: "center",
+                
               }}>
                 
           <AdbIcon sx={{ display: "flex", mr: 1 }} />
