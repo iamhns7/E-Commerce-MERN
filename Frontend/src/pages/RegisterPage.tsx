@@ -2,22 +2,28 @@ import { Box, Button, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import { useRef } from "react";
+import { useAuth } from "../context/auth/AuthContext";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const RegisterPage = () => {
-    const firstNameRef = useRef<HTMLInputElement>(null);
+const firstNameRef = useRef<HTMLInputElement>(null);
 const lastNameRef = useRef<HTMLInputElement>(null);
 const emailRef = useRef<HTMLInputElement>(null);
 const passwordRef = useRef<HTMLInputElement>(null);
 
+const {login} = useAuth()
 
-    const onSubmit = async() => {
-       
-        const firstName = firstNameRef.current?.value;
-        const lastName = lastNameRef.current?.value;
-        const email = emailRef.current?.value;
-        const password = passwordRef.current?.value;
+ const onSubmit = async () => {
+  const firstName = firstNameRef.current?.value;
+  const lastName = lastNameRef.current?.value;
+  const email = emailRef.current?.value;
+  const password = passwordRef.current?.value;
+  //validate the form data
+  if (!firstName || !lastName || !email || !password) {
+    console.error("All fields are required");
+    return;
+  }
 
         console.log(firstName,lastName, email, password)
         const response = await fetch(`${apiUrl}/user/register`,{
@@ -29,8 +35,10 @@ const passwordRef = useRef<HTMLInputElement>(null);
               firstName, lastName, email, password
             })
         })
-        const data = await response.json();
-        console.log(data)
+        const token = await response.json();
+
+        login(email, token)
+        console.log(token)
     }
   return (
     <Container>
