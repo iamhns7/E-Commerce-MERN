@@ -7,34 +7,32 @@ import { useNavigate } from "react-router-dom";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const RegisterPage = () => {
-const firstNameRef = useRef<HTMLInputElement>(null);
-const lastNameRef = useRef<HTMLInputElement>(null);
+const LoginPage = () => {
 const emailRef = useRef<HTMLInputElement>(null);
 const passwordRef = useRef<HTMLInputElement>(null);
 
-const navigate = useNavigate()
+const navigate = useNavigate();
 
 const {login} = useAuth()
 
  const onSubmit = async () => {
-  const firstName = firstNameRef.current?.value;
-  const lastName = lastNameRef.current?.value;
+ 
   const email = emailRef.current?.value;
   const password = passwordRef.current?.value;
   //validate the form data
-  if (!firstName || !lastName || !email || !password) {
+  if (!email || !password) {
     console.error("All fields are required");
     return;
   }
-    console.log(firstName,lastName, email, password)
-        const response = await fetch(`${apiUrl}/user/register`,{
-       method: "POST",
+
+        console.log(email, password)
+        const response = await fetch(`${apiUrl}/user/login`,{
+            method: "POST",
             headers:{
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              firstName, lastName, email, password
+             email, password
             })
         })
         const token = await response.json();
@@ -53,7 +51,7 @@ const {login} = useAuth()
             mt: 4, 
         }}>
             
-      <Typography variant="h6">Register new account</Typography>
+      <Typography variant="h6">Login to your account</Typography>
       <Box sx={{
         display: "flex",
         flexDirection: "column",
@@ -65,15 +63,13 @@ const {login} = useAuth()
 
         }}>
             
-            <TextField inputRef={firstNameRef}label="First Name" name="firstName"/>
-            <TextField inputRef={lastNameRef}label="Last Name" name="lastName"/>
             <TextField inputRef={emailRef} label="Email" name="email"/>
             <TextField inputRef={passwordRef} label="Password" type="password" name="password"/>
-            <Button onClick={onSubmit}variant="contained">Register</Button>
+            <Button onClick={onSubmit}variant="contained">Login</Button>
         </Box>
       </Box>
     </Container>
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

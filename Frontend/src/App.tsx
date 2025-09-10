@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import RegisterPage from "./pages/RegisterPage";
 import AuthProvider from "./context/auth/AuthProvider";
+import LoginPage from "./pages/LoginPage";
 
 
 
@@ -16,6 +17,7 @@ return (
     <Routes>
       <Route path="/" element= {<HomePage/>}/>
       <Route path="/register" element= {<RegisterPage/>}/>
+       <Route path="/login" element= {<LoginPage/>}/>
     </Routes>
     </BrowserRouter>
     </AuthProvider>
