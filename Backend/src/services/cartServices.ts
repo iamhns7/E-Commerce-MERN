@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import { cartModel, ICart, ICartItem } from "../models/cartModel";
 import { IOrderItem, orderModel } from "../models/orderModel";
 import productModel from "../models/productModel";
@@ -14,10 +15,18 @@ const createCartForUser = async ({ userId }: CreateCartForUser) => {
 
 interface GetActiveCartForUser {
   userId: string;
+  populateProduct?: boolean;
 }
 
-export const getActiveCartForUser = async ({ userId }: GetActiveCartForUser) => {
-  let cart = await cartModel.findOne({ userId, status: "active" });
+export const getActiveCartForUser = async ({ userId, populateProduct }: GetActiveCartForUser) => {
+  let cart;
+  if(populateProduct){
+    cart = await cartModel.findOne({ userId, status: "active" }).populate('items.product');
+
+  } else{
+      cart = await cartModel.findOne({ userId, status: "active" })
+    
+  }
 
   if (!cart) {
     cart = await createCartForUser({ userId });
@@ -74,10 +83,9 @@ export const addItemToCart = async({productId, quantity, userId}: addItemToCart)
 
     
     cart.totalAmount += product.price * quantity;
-
-    const updateCart = await cart.save();
-    return{
-      data: updateCart,statusCode: 200
+     await cart.save();
+     return{
+      data: await getActiveCartForUser({userId, populateProduct: true}),statusCode: 200
     } 
 }
 
@@ -117,10 +125,9 @@ export const updateItemInCart = async ({productId, userId, quantity}: UpdateItem
     total += existsInCart.quantity * existsInCart.unitPrice;
 
     cart.totalAmount = total;
-
-    const updateCart = await cart.save();
-    return{
-      data: updateCart,statusCode: 200
+      await cart.save();
+      return{
+      data: await getActiveCartForUser({userId, populateProduct: true}),statusCode: 200
     }   
 }
 
@@ -143,10 +150,9 @@ export const deleteItemInCart = async ({userId, productId}: DeleteItemInCart) =>
  
     cart.items = otherCartItems;
     cart.totalAmount = total;
-
-    const deleteCart = await cart.save();
+     await cart.save();
      return{
-      data: deleteCart,statusCode: 200
+      data: await getActiveCartForUser,statusCode: 200
     }   
 }
 
