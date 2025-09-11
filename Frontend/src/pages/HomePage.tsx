@@ -27,7 +27,7 @@ useEffect(() => {
       <Grid container spacing={2}>
         {products.map(({_id, title, image, price}) => (
   <Grid item md={4} key={_id}>
-    <ProductCard id={_id} title={title} image={image} price={price}/>
+    <ProductCard _id={_id} title={title} image={image} price={price}/>
   </Grid>
         ))}
       </Grid>

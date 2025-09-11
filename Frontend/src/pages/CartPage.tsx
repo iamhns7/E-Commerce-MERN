@@ -8,7 +8,8 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const CartPage = () => {
   const {token} = useAuth();
   const [cart, setcart] = useState();
-  const [error, setError] = useState("");
+  const [, setError] = useState<string | null>(null);
+
 
   useEffect(() => {
     if(!token){
