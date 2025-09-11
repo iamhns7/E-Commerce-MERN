@@ -10,14 +10,16 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import  ShoppingCart  from '@mui/icons-material/ShoppingCart'
 import { useAuth } from '../context/auth/AuthContext';
-import { Button, Grid } from '@mui/material';
+import { Badge, Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 
 
+
 function Navbar() {
-  const { username, isAuthenticated} = useAuth();
+  const { username, isAuthenticated, logout} = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const navigate = useNavigate()
@@ -32,6 +34,16 @@ function Navbar() {
 
   const handleLogin = () => {
     navigate('/login')
+  }
+
+  const handleLoguot = () => {
+    logout()
+    navigate('/')
+    handleCloseUserMenu()
+  }
+
+  const handleCart = () => {
+    navigate('/cart ')
   }
   return (
     <AppBar  position="static"
@@ -69,7 +81,12 @@ function Navbar() {
             Tech House
           </Typography></Box>
           
-          <Box sx={{ flexGrow: 0 }}>
+          <Box gap={4} display= 'flex' flexDirection= 'row' alignItems='center' justifyContent='center' >
+            <IconButton aria-label="cart" onClick={handleCart} >
+              <Badge badgeContent={4} color="secondary">
+                <ShoppingCart sx={{ color: "#eee"}} />
+              </Badge>
+            </IconButton>
             {isAuthenticated? (
               <>
             <Tooltip title="Open settings">
@@ -105,7 +122,7 @@ function Navbar() {
                   <Typography  textAlign = 'center' >My Orders</Typography>
                 </MenuItem>
 
-              <MenuItem onClick={handleCloseUserMenu}>
+              <MenuItem onClick={handleLoguot}>
                   <Typography  textAlign = 'center' >Logout</Typography>
                 </MenuItem>
             </Menu>
