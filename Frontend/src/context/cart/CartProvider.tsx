@@ -1,4 +1,4 @@
-import { useState, type FC, type PropsWithChildren } from "react";
+import { useEffect, useState, type FC, type PropsWithChildren } from "react";
 import { CartContext } from "./CartContext";
 import type { cartItem } from "../../types/CartItem";
 import { useAuth } from "../auth/AuthContext";
@@ -9,6 +9,36 @@ const CartProvider: FC<PropsWithChildren> = ({children}) => {
    const {token} = useAuth();
    const [cartItems, setCartItems] = useState<cartItem[]>([]);
    const [totalAmount, setTotalAmount] = useState<number>(0);
+   const [, setError] = useState<string | null>(null);
+
+
+    useEffect(() => {
+    if(!token){
+        return;
+    }
+    const fetchCart = async () => {
+      const response = await fetch(`${apiUrl}/cart`,{
+        headers: {
+            'Authorization':`Bearer ${token}`
+        }
+      });
+      if(!response.ok){
+        setError('Failed to fetch user cart. Please try again')
+      }
+      const cart = await response.json();
+         const cartItemsMapped = cart.items.map(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ({product, quantity}: {product : any; quantity: number}) => ({
+         productId: product._id,
+         title: product.title,
+         image: product.image,
+         quantity,
+         unitPrice: product.unitPrice}))
+      setCartItems(cartItemsMapped)
+    }
+    fetchCart();
+  },[token])
+
 
    const AddItemToCart = async (productId: string) => {
     try{
@@ -26,14 +56,7 @@ const CartProvider: FC<PropsWithChildren> = ({children}) => {
         
         const cart = await response.json();
 
-       const cartItemsMapped = cart.items.map(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ({product, quantity}: {product : any; quantity: number}) => ({
-         productId: product._id,
-         title: product.title,
-         image: product.image,
-         quantity,
-         unitPrice: product.unitPrice}))
+    
         setCartItems([...cartItemsMapped]);
         setTotalAmount(cart.totalAmount)
     }
