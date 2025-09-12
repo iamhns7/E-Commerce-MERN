@@ -7,7 +7,7 @@ import { Box } from "@mui/system";
 
 const CartPage = () => {
  
-  const {cartItems, totalAmount, updateItemInCart, removeItemInCart} = useCart()
+  const {cartItems, totalAmount, updateItemInCart, removeItemInCart, clearCart} = useCart()
   
   const handleQuantity = (productId: string, quantity: number) => {
     if(quantity <= 0){
@@ -18,13 +18,18 @@ const CartPage = () => {
  
   const handleRemoveItem = (productId: string) => {
     removeItemInCart(productId)
-
   }
 
   
+  
   return(
    <Container fixed sx={{ mt: 2 }}>
-    <Typography variant="h4">My Cart</Typography>
+    <Box display='flex' flexDirection='row' justifyContent='space-between' sx={{
+      mb: 2
+    }}>
+      <Typography variant="h4">My Cart</Typography>
+      <Button onClick={() => clearCart()} >Clear Cart</Button>
+   </Box>
     <Box display='flex' flexDirection='column' gap={3} >
     {cartItems.map((item) => (
       <Box display= "flex" flexDirection= 'row' justifyContent= 'space-between' alignItems= 'center' sx={{

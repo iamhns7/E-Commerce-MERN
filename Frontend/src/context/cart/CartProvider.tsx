@@ -100,7 +100,7 @@ const CartProvider: FC<PropsWithChildren> = ({children}) => {
         }),
         })
          if (!response.ok) {
-        setError("Failed to delete to cart");
+        setError("Failed to update to cart");
       }
 
       const cart = await response.json();
@@ -139,7 +139,7 @@ const CartProvider: FC<PropsWithChildren> = ({children}) => {
             },
         })
          if (!response.ok) {
-        setError("Failed to update to cart");
+        setError("Failed to delete to cart");
       }
 
       const cart = await response.json();
@@ -167,9 +167,37 @@ const CartProvider: FC<PropsWithChildren> = ({children}) => {
     }
    
   }
+   const clearCart = async() => {
+
+     try{
+     const response = await fetch(`${apiUrl}/cart`,{
+            method: "DELETE",
+            headers:{
+                
+                Authorization: `Bearer ${token}`
+            },
+        })
+         if (!response.ok) {
+        setError("Failed to empty to cart");
+      }
+
+      const cart = await response.json();
+       
+      if (!cart) {
+        setError("Failed to parse cart data");
+      }
+
+
+        setCartItems([]);
+        setTotalAmount(0)
+    }
+    catch (error){
+        console.error(error)
+    }
+   }
 
     return(
-        <CartContext.Provider value={{cartItems, totalAmount, AddItemToCart, updateItemInCart, removeItemInCart}}>
+        <CartContext.Provider value={{cartItems, totalAmount, AddItemToCart, updateItemInCart, removeItemInCart, clearCart}}>
             {children}
             </CartContext.Provider>
     )
