@@ -7,10 +7,19 @@ import { Box } from "@mui/system";
 
 const CartPage = () => {
  
-  const {cartItems, totalAmount} = useCart()
+  const {cartItems, totalAmount, updateItemInCart, removeItemInCart} = useCart()
   
+  const handleQuantity = (productId: string, quantity: number) => {
+    if(quantity <= 0){
+      return
+    }
+    updateItemInCart(productId, quantity)
+  }
+ 
+  const handleRemoveItem = (productId: string) => {
+    removeItemInCart(productId)
 
-
+  }
 
   
   return(
@@ -29,12 +38,12 @@ const CartPage = () => {
        <Box>
        <Typography variant="h6"> {item.title}</Typography>
        <Typography> {item.quantity} x {item.unitPrice.toFixed(2)} $</Typography>
-       <Button>Remove item</Button>
+       <Button onClick={() => handleRemoveItem(item.productId)} >Remove item</Button>
        </Box>
        </Box>
          <ButtonGroup variant="contained" aria-label="Basic button group">
-          <Button>-</Button>
-          <Button>+</Button>
+          <Button onClick={() => handleQuantity(item.productId, item.quantity-1)} >-</Button>
+          <Button onClick={() => handleQuantity(item.productId, item.quantity+1)} >+</Button>
         </ButtonGroup>
         
       </Box>
