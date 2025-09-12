@@ -1,28 +1,48 @@
 import  Container  from "@mui/material/Container"
 import { Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useAuth } from "../context/auth/AuthContext";
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import { useCart } from "../context/cart/CartContext";
 import { Box } from "@mui/system";
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
 const CartPage = () => {
-  const {token} = useAuth();
+ 
   const {cartItems, totalAmount} = useCart()
-  const [, setError] = useState<string | null>(null);
+  
 
 
 
   
   return(
-   <Container sx={{ mt: 2 }}>
+   <Container fixed sx={{ mt: 2 }}>
     <Typography variant="h4">My Cart</Typography>
+    <Box display='flex' flexDirection='column' gap={3} >
     {cartItems.map((item) => (
-      <Box>
-        {item.title}
+      <Box display= "flex" flexDirection= 'row' justifyContent= 'space-between' alignItems= 'center' sx={{
+        border: 2,
+        borderColor: '#f5f5f5',
+        borderRadius: 5,
+        padding: 1
+      }} >
+        <Box display='flex' flexDirection='row' alignItems='center' gap={1}>
+       <img src={item.image} width={120}/>
+       <Box>
+       <Typography variant="h6"> {item.title}</Typography>
+       <Typography> {item.quantity} x {item.unitPrice.toFixed(2)} $</Typography>
+       <Button>Remove item</Button>
+       </Box>
+       </Box>
+         <ButtonGroup variant="contained" aria-label="Basic button group">
+          <Button>-</Button>
+          <Button>+</Button>
+        </ButtonGroup>
+        
       </Box>
     ))}
+    <Box>
+      <Typography variant="h4" > Total Amount= {totalAmount} $</Typography>
+      </Box>
+    </Box>
     </Container>
   ) 
 }
