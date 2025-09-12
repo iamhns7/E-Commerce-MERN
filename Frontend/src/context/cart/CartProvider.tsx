@@ -41,8 +41,8 @@ const CartProvider: FC<PropsWithChildren> = ({children}) => {
     fetchCart();
   },[token])
 
-
-   const AddItemToCart = async (productId: string) => {
+  const AddItemToCart = async (productId: string) => {
+  console.log("Token in addItemToCart:", token);
     try{
      const response = await fetch(`${apiUrl}/cart/items`,{
             method: "POST",
