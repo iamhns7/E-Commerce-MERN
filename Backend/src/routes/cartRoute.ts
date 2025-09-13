@@ -68,7 +68,7 @@ router.delete("/items/:productId", validateJWT, async (req: ExtendRequest, res) 
 })
 
 router.post("/checkout", validateJWT, async (req: ExtendRequest, res) => {
-    try{const userId = req.user._id;
+    try{const userId = req?.user?._id;
     const {address} = req.body;
     const response = await checkout({userId, address});
     res.status(response.statusCode).send(response.data);}

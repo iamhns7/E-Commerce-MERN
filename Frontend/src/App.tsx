@@ -7,7 +7,8 @@ import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
 import ProtectedRoute from "./components/ProtecdetRoute";
 import CartProvider from "./context/cart/CartProvider";
-import CheckOutPage from "./pages/CheckoutPage";
+import CheckOutPage from "./pages/CheckOutPage";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 
 
 
@@ -25,7 +26,9 @@ return (
       <Route path="/login" element= {<LoginPage/>}/>
       <Route element={<ProtectedRoute/>}>
       <Route path="/cart" element= {<CartPage/>}/> 
-      <Route path="/checkout" element= {<CheckOutPage/>}/>    
+      <Route path="/checkout" element= {<CheckOutPage/>}/>  
+      <Route path="/order-success" element= {<OrderSuccessPage/>}/>   
+
     </Route>
     </Routes>
     </BrowserRouter>
