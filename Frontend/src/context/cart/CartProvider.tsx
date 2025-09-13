@@ -128,55 +128,49 @@ const CartProvider: FC<PropsWithChildren> = ({children}) => {
     }
    }
     
-   const removeItemInCart = async(productId: string) => {
+   const removeItemInCart = async (productId: string) => {
+  try {
+    const response = await fetch(`${apiUrl}/cart/items/${productId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-        try{
-     const response = await fetch(`${apiUrl}/cart/items/${productId}`,{
-            method: "DELETE",
-            headers:{
-                
-                Authorization: `Bearer ${token}`
-            },
-        })
-         if (!response.ok) {
-        setError("Failed to delete to cart");
-      }
-
-      const cart = await response.json();
-       
-      if (!cart) {
-        setError("Failed to parse cart data");
-      }
-
-      const cartItemsMapped = cart.items.map(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ({ product, quantity, unitPrice }: { product: any; quantity: number, unitPrice: number }) => ({
-          productId: product._id,
-          title: product.title,
-          image: product.image,
-          quantity,
-          unitPrice,
-        })
-      );
-
-        setCartItems([...cartItemsMapped]);
-        setTotalAmount(cart.totalAmount)
+    if (!response.ok) {
+      setError("Failed to delete from cart");
+      return;
     }
-    catch (error){
-        console.error(error)
-    }
-   
+
+    const cart = await response.json().catch(() => ({ items: [], totalAmount: 0 }));
+
+    const cartItemsMapped = (cart.items || []).map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ({ product, quantity, unitPrice }: { product: any; quantity: number, unitPrice: number }) => ({
+        productId: product._id,
+        title: product.title,
+        image: product.image,
+        quantity,
+        unitPrice,
+      })
+    );
+
+    setCartItems(cartItemsMapped);
+    setTotalAmount(cart.totalAmount || 0);
+  } catch (error) {
+    console.error(error);
   }
-   const clearCart = async() => {
+};
 
+   const clearCart = async() => {
      try{
-     const response = await fetch(`${apiUrl}/cart`,{
-            method: "DELETE",
-            headers:{
-                
-                Authorization: `Bearer ${token}`
-            },
-        })
+     const response = await fetch(`${apiUrl}/cart`, {
+    method: "DELETE",
+    headers: {
+        Authorization: `Bearer ${token}`
+    }
+})
+
          if (!response.ok) {
         setError("Failed to empty to cart");
       }

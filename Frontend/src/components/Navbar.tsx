@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -38,6 +38,11 @@ function Navbar() {
     navigate('/login')
   }
 
+  const handleMyOrders = () => {
+     navigate('/my-orders')
+     handleCloseUserMenu()
+  }
+
   const handleLoguot = () => {
     logout()
     navigate('/')
@@ -45,7 +50,7 @@ function Navbar() {
   }
 
   const handleCart = () => {
-    navigate('/cart ')
+    navigate('/cart')
   }
   return (
     <AppBar  position="static"
@@ -122,7 +127,7 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleCloseUserMenu}>
+              <MenuItem onClick={handleMyOrders}>
                   <Typography  textAlign = 'center' >My Orders</Typography>
                 </MenuItem>
 

@@ -66,7 +66,7 @@ const CheckOutPage = () => {
           width="100%">
               <Typography variant="h6">{item.title}</Typography>
               <Typography>
-                {item.quantity} x {item.unitPrice.toFixed(2)} $
+                {item.quantity} x {item.unitPrice} $
               </Typography>
               
             </Box>

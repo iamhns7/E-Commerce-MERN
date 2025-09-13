@@ -23,16 +23,14 @@ router.get('/', validateJWT,
 })
 
 router.delete("/", validateJWT, async (req: ExtendRequest, res) => {
-    try{
-      const userId = req.user._id;
-     const response = await clearCart({userId});
-     res.status(response.statusCode).send(response.data);
-    }
-    catch{
-   res.status(500).send("Something went wrong!")
-    }
-    
-})
+  try {
+    const userId = req?.user?._id;
+    const response = await clearCart({ userId });
+    res.status(response.statusCode).send(response.data);
+  } catch {
+    res.status(500).send("Something went wrong!");
+  }
+});
 
 router.post('/items', validateJWT, async (req: ExtendRequest, res) =>{
     try{const userId = req.user._id;
@@ -56,16 +54,22 @@ router.put("/items", validateJWT , async (req: ExtendRequest, res) => {
     
 })
 
-router.delete("/items/:productId", validateJWT, async (req: ExtendRequest, res) => {
-    try{const userId = req.user._id;
-    const { productId } = req.params;
-    const response = await deleteItemInCart({userId, productId});
-    res.status(response.statusCode).send(response.data);}
-    catch{
-   res.status(500).send("Something went wrong!")
+router.delete(
+  "/items/:productId",
+  validateJWT,
+  async (req: ExtendRequest, res) => {
+    try {
+      const userId = req?.user?._id;
+      const { productId } = req.params;
+      const response = await deleteItemInCart({ userId, productId });
+      res.status(response.statusCode).json(response.data || { items: [], totalAmount: 0 });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Something went wrong!" });
     }
-    
-})
+  }
+);
+
 
 router.post("/checkout", validateJWT, async (req: ExtendRequest, res) => {
     try{const userId = req?.user?._id;
